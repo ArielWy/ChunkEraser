@@ -1,0 +1,4 @@
+name: ChunkEraser
+version: '${project.version}'
+main: me.olios.plugins.chunkeraser.ChunkEraser
+api-version: 1.20
