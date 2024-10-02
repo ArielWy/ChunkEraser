@@ -1,0 +1,5 @@
+# Configuration File
+
+enabled: true
+timer: 600 # Time in seconds
+bossbarMessage: "<red>Next chunk deletion in <timer> seconds!"
