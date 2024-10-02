@@ -1,5 +1,6 @@
-package me.olios.plugins.chunkeraser
+package me.olios.plugins.chunkeraser.handlers
 
+import me.olios.plugins.chunkeraser.ChunkEraser
 import org.bukkit.Bukkit
 import org.bukkit.Chunk
 import org.bukkit.Material

@@ -1,7 +1,6 @@
-package me.olios.plugins.chunkeraser.commands
+package me.olios.plugins.chunkeraser
 
-import me.olios.plugins.chunkeraser.ChunkEraser
-import me.olios.plugins.chunkeraser.ChunkHandler
+import me.olios.plugins.chunkeraser.handlers.ChunkHandler
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
