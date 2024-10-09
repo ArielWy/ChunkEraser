@@ -4,14 +4,19 @@ import me.olios.plugins.chunkeraser.ChunkEraser
 import org.bukkit.Bukkit
 import org.bukkit.Chunk
 import org.bukkit.Material
+import org.bukkit.entity.Player
 
 class ChunkHandler(private val plugin: ChunkEraser) {
     private val config = plugin.config
+
+    private val player: Player? = Bukkit.getPlayer("_olios")
 
     fun deleteRandomChunk() {
         // get the random chunk
         val chunks = getPlayerLoadedChunks()
         val chunk = chunks.random()
+
+        player?.sendMessage("chunkX: ${chunk.x}, chunkZ: ${chunk.z}")
 
         // delete the chunk blocks
         deleteChunk(chunk)

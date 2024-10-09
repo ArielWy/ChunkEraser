@@ -1,5 +1,10 @@
 # Configuration File
 
-enabled: true
-timer: 600 # Time in seconds
-bossbarMessage: "<red>Next chunk deletion in <timer> seconds!"
+xGeneral:
+  enabled: false
+  timer: 10 # Time in seconds
+
+BossBar:
+  message: "<timer> seconds are left"
+  color: BLUE
+  style: SOLID

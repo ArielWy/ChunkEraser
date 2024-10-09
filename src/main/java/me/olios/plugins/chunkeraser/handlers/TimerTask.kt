@@ -1,31 +1,56 @@
 package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
+import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 
-class TimerTask(private val plugin: ChunkEraser) {
+class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: BossBarHandler) {
+    private val config = plugin.config
     private val chunkHandler = ChunkHandler(plugin)
+    private val intervalTime: Long = config.getLong("General.timer")
 
-    private var task: BukkitRunnable? = null
+    var timer: Long = 10
+    var task: BukkitRunnable? = null
+
+    private val player: Player? = Bukkit.getPlayer("_olios")
 
     fun startTask() {
-        val interval = plugin.config.getLong("timer") * 20 // Convert seconds to ticks
+        timer = intervalTime
+        bossBarHandler.createBossBar()
+
+        player?.sendMessage("start task")
+
         task = object : BukkitRunnable() {
             override fun run() {
-                chunkHandler.deleteRandomChunk()
-                // bossBarHandler.updateBossBar(plugin.config.getLong("interval"))
+                if (timer == 0L) {
+                    chunkHandler.deleteRandomChunk()
+                    restartTask()
+                }
+
+                bossBarHandler.updateBossBar()
+                timer--
             }
         }
-        task?.runTaskTimer(plugin, interval, interval)
+        task?.runTaskTimer(plugin, 20, 20)
     }
 
     fun stopTask() {
-        task?.cancel()
-        task = null
+        if (task != null) {
+            task?.cancel()
+            task = null
+            bossBarHandler.removeBossBar()
+            player?.sendMessage("stop task")
+        } else {
+            player?.sendMessage("No task to stop")
+        }
     }
+
 
     fun restartTask() {
         stopTask()
         startTask()
+
+        player?.sendMessage("restart task")
     }
 }

@@ -8,6 +8,13 @@ class ChunkEraser : JavaPlugin() {
         saveDefaultConfig()
 
         registerCommands()
+
+        PluginManager.initialize(this)
+        PluginManager.isEnabled()
+    }
+
+    override fun onDisable() {
+        PluginManager.stopTimer()
     }
 
     private fun registerCommands() {
