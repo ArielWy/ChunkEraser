@@ -1,10 +1,11 @@
 # Configuration File
 
-xGeneral:
-  enabled: false
-  timer: 10 # Time in seconds
+General:
+  enabled: false # toggle the plugin on or off
+  cooldown: 10 # Time in seconds
 
 BossBar:
-  message: "<timer> seconds are left"
-  color: BLUE
-  style: SOLID
+  enabled: true # Toggle the bossbar on or off
+  title: "<timer> seconds are left" # the title of the bossbar
+  color: BLUE # the color of the bossbar
+  style: SOLID # the style of the bossbar - can be SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20

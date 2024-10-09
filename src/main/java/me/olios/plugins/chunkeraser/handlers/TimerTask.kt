@@ -8,7 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable
 class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: BossBarHandler) {
     private val config = plugin.config
     private val chunkHandler = ChunkHandler(plugin)
-    private val intervalTime: Long = config.getLong("General.timer")
+    private val intervalTime: Long = config.getLong("General.cooldown")
 
     var timer: Long = 10
     var task: BukkitRunnable? = null
@@ -24,6 +24,7 @@ class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: Bos
         task = object : BukkitRunnable() {
             override fun run() {
                 if (timer == 0L) {
+                    bossBarHandler.updateBossBar()
                     chunkHandler.deleteRandomChunk()
                     restartTask()
                 }
