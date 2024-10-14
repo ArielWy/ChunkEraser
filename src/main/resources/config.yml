@@ -3,6 +3,11 @@
 General:
   enabled: false # toggle the plugin on or off
   cooldown: 10 # Time in seconds
+  playerChunkDistance: 10 # the player distance of chunks that can be erased
+  forAllPlayers: false # If true, removes a chunk from each player's view distance
+  increaseEachTime: false # If true, increases the number of chunks removed each time
+  notifyPlayers: true # Send notify message when a chunk is erased
+  iterations: 0 # Keeps track of chunks removed iterations
 
 BossBar:
   enabled: true # Toggle the bossbar on or off

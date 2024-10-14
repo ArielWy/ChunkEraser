@@ -11,7 +11,7 @@ class BossBarHandler(private val plugin: ChunkEraser) {
     private lateinit var timerTask: TimerTask
     private var bossBar: BossBar? = null
     private val config = plugin.config
-    private val intervalTime: Long = config.getLong("General.timer") * 20
+    private val intervalTime: Long = config.getLong("General.cooldown") * 20
 
     private val player: Player? = Bukkit.getPlayer("_olios")
 
@@ -26,7 +26,7 @@ class BossBarHandler(private val plugin: ChunkEraser) {
     fun createBossBar() {
         if (!isEnabled()) return
 
-        val title: String = config.getString("BossBar.message")?.replace("<timer>", timerTask.timer.toString(), true) ?: timerTask.timer.toString()
+        val title: String = config.getString("BossBar.title")?.replace("<timer>", timerTask.timer.toString(), true) ?: timerTask.timer.toString()
         val barColor: String = config.getString("BossBar.color") ?: "BLUE"
         val barStyle: String = config.getString("BossBar.style") ?: "SOLID"
 

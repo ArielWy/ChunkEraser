@@ -25,7 +25,7 @@ class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: Bos
             override fun run() {
                 if (timer == 0L) {
                     bossBarHandler.updateBossBar()
-                    chunkHandler.deleteRandomChunk()
+                    chunkHandler.processChunks()
                     restartTask()
                 }
 
@@ -53,5 +53,11 @@ class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: Bos
         startTask()
 
         player?.sendMessage("restart task")
+    }
+
+    fun isRunning(): Boolean {
+        if (task == null)
+            return false
+        return true
     }
 }

@@ -27,17 +27,21 @@ object PluginManager {
         timerTask?.stopTask()
     }
 
-    fun restartTimer() {
-        timerTask?.restartTask()
+    fun restartTimer(ifRunning: Boolean = false) {
+        if (ifRunning) {
+            if (timerTask?.isRunning() == true)
+                timerTask?.restartTask()
+            else return
+        } else timerTask?.restartTask()
     }
 
     fun removeChunkImmediately() {
-        ChunkHandler(plugin!!).deleteRandomChunk()
-        restartTimer()
+        ChunkHandler(plugin!!).processChunks()
+        restartTimer(true)
     }
 
     fun isEnabled() {
-        if (plugin == null || !plugin!!.config.getBoolean("General.enable")) return
+        if (!plugin!!.config.getBoolean("General.enable")) return
 
         startTimer()
     }
