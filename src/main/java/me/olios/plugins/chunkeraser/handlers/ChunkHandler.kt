@@ -1,8 +1,12 @@
 package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Bukkit
 import org.bukkit.Chunk
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -36,6 +40,7 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         for (onlinePlayer in Bukkit.getOnlinePlayers()) {
             val chunk = getRandomChunkForPlayer(onlinePlayer)
             deleteChunk(chunk)
+            notifyPlayers(chunk)
             sendDebugMessage(player, chunk)
         }
     }
@@ -45,6 +50,7 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         val randomPlayer = Bukkit.getOnlinePlayers().random()
         val chunk = getRandomChunkForPlayer(randomPlayer)
         deleteChunk(chunk)
+        notifyPlayers(chunk)
 
         sendDebugMessage(player, chunk)
     }
@@ -118,6 +124,22 @@ class ChunkHandler(private val plugin: ChunkEraser) {
                 }
             }
         }
+    }
+
+    fun notifyPlayers(chunk: Chunk) {
+        if (!config.getBoolean("General.notifyPlayers")) return
+
+        val chunkX = chunk.x.toString()
+        val chunkZ = chunk.z.toString()
+
+        val message: String = config.getString("Messages.chunkErasedNotification").toString()
+        val resolver = TagResolver.builder()
+            .resolver(Placeholder.parsed("chunkx", chunkX))
+            .resolver(Placeholder.parsed("chunkz", chunkZ))
+            .build()
+        val messageComponent = MiniMessage.miniMessage().deserialize(message, resolver)
+
+        Bukkit.broadcast(messageComponent)
     }
 
     // Set blocks in a chunk to LIGHT_BLUE_WOOL for debugging purposes

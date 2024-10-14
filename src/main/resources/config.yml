@@ -14,3 +14,21 @@ BossBar:
   title: "<timer> seconds are left" # the title of the bossbar
   color: BLUE # the color of the bossbar
   style: SOLID # the style of the bossbar - can be SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+
+ActionBar:
+  enabled: false # Toggle the action bar on or off
+  message: "Chunks being erased in <timer> seconds!"
+
+
+Messages:
+  # We are using Mini Messages to give the best
+  chunkErasedNotification: "<aqua>A chunk has been <hover:show_text:'<gold>at</gold> <green><chunkx></green>, <green><chunkz></green>'>erased!</hover></aqua>"
+
+Sound:
+  enabled: true # Toggle the sound notifications on or off
+  soundType: "ENTITY_ENDER_DRAGON_GROWL" # The type of sound to play
+  allPlayers: false # If true, plays sound for all players; otherwise, just for the player where the chunk is erased
+
+Logging:
+  enabled: true # Toggle logging on or off
+  logFilePath: "plugins/ChunkErase/logs.txt" # Path to the log file
