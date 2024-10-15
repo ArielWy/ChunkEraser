@@ -17,7 +17,7 @@ BossBar:
 
 ActionBar:
   enabled: false # Toggle the action bar on or off
-  message: "Chunks being erased in <timer> seconds!"
+  message: "<blue>Chunks being erased in <gold><timer></gold> seconds!</blue>"
 
 
 Messages:

@@ -8,25 +8,16 @@ import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 
 class BossBarHandler(private val plugin: ChunkEraser) {
-    private lateinit var timerTask: TimerTask
     private var bossBar: BossBar? = null
     private val config = plugin.config
     private val intervalTime: Long = config.getLong("General.cooldown") * 20
 
     private val player: Player? = Bukkit.getPlayer("_olios")
 
-    constructor(plugin: ChunkEraser, timerTask: TimerTask) : this(plugin) {
-        this.timerTask = timerTask
-    }
-
-    fun setTimerTask(timerTask: TimerTask) {
-        this.timerTask = timerTask
-    }
-
-    fun createBossBar() {
+    fun createBossBar(timer: Long) {
         if (!isEnabled()) return
 
-        val title: String = config.getString("BossBar.title")?.replace("<timer>", timerTask.timer.toString(), true) ?: timerTask.timer.toString()
+        val title: String = config.getString("BossBar.title")?.replace("<timer>", timer.toString(), true) ?: timer.toString()
         val barColor: String = config.getString("BossBar.color") ?: "BLUE"
         val barStyle: String = config.getString("BossBar.style") ?: "SOLID"
 
@@ -37,14 +28,14 @@ class BossBarHandler(private val plugin: ChunkEraser) {
         player?.sendMessage("CREATE BOSS-BAR")
     }
 
-    fun updateBossBar() {
+    fun updateBossBar(timer: Long) {
         if (!isEnabled()) return
 
-        val title: String = config.getString("BossBar.title")?.replace("<timer>", timerTask.timer.toString(), true) ?: timerTask.timer.toString()
+        val title: String = config.getString("BossBar.title")?.replace("<timer>", timer.toString(), true) ?: timer.toString()
         bossBar?.setTitle(title)
 
         // Calculate progress
-        val progress = if (timerTask.timer > 0) (intervalTime - timerTask.timer * 20).toDouble() / intervalTime else 1.0
+        val progress = if (timer > 0) (intervalTime - timer * 20).toDouble() / intervalTime else 1.0
         bossBar?.progress = progress.coerceIn(0.0, 1.0)
 
         Bukkit.getOnlinePlayers().forEach { player -> bossBar?.addPlayer(player) }

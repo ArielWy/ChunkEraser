@@ -5,9 +5,11 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 
-class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: BossBarHandler) {
+class TimerTask(private val plugin: ChunkEraser) {
     private val config = plugin.config
     private val chunkHandler = ChunkHandler(plugin)
+    val actionBarHandler = ActionBarHandler(plugin)
+    val bossBarHandler = BossBarHandler(plugin)
     private val intervalTime: Long = config.getLong("General.cooldown")
 
     var timer: Long = 10
@@ -17,19 +19,22 @@ class TimerTask(private val plugin: ChunkEraser, private val bossBarHandler: Bos
 
     fun startTask() {
         timer = intervalTime
-        bossBarHandler.createBossBar()
+        bossBarHandler.createBossBar(timer)
+        actionBarHandler.sendActionBar(timer)
 
         player?.sendMessage("start task")
 
         task = object : BukkitRunnable() {
             override fun run() {
                 if (timer == 0L) {
-                    bossBarHandler.updateBossBar()
+                    bossBarHandler.updateBossBar(timer)
+                    actionBarHandler.sendActionBar(timer)
                     chunkHandler.processChunks()
                     restartTask()
                 }
 
-                bossBarHandler.updateBossBar()
+                bossBarHandler.updateBossBar(timer)
+                actionBarHandler.sendActionBar(timer)
                 timer--
             }
         }
