@@ -4,10 +4,7 @@ import me.olios.plugins.chunkeraser.ChunkEraser
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
-import org.bukkit.Bukkit
-import org.bukkit.Chunk
-import org.bukkit.Location
-import org.bukkit.Material
+import org.bukkit.*
 import org.bukkit.entity.Player
 
 class ChunkHandler(private val plugin: ChunkEraser) {
@@ -23,6 +20,8 @@ class ChunkHandler(private val plugin: ChunkEraser) {
             if (config.getBoolean("General.forAllPlayers"))
                 processChunksForAllPlayers()
             else processChunksForRandomPlayer()
+
+            playPlayerSound() // Play sound for all players after chunk erase
         }
     }
 
@@ -39,8 +38,11 @@ class ChunkHandler(private val plugin: ChunkEraser) {
     private fun processChunksForAllPlayers() {
         for (onlinePlayer in Bukkit.getOnlinePlayers()) {
             val chunk = getRandomChunkForPlayer(onlinePlayer)
+
             deleteChunk(chunk)
             notifyPlayers(chunk)
+            playChunkSound(chunk)
+
             sendDebugMessage(player, chunk)
         }
     }
@@ -49,8 +51,10 @@ class ChunkHandler(private val plugin: ChunkEraser) {
     private fun processChunksForRandomPlayer() {
         val randomPlayer = Bukkit.getOnlinePlayers().random()
         val chunk = getRandomChunkForPlayer(randomPlayer)
+
         deleteChunk(chunk)
         notifyPlayers(chunk)
+        playChunkSound(chunk)
 
         sendDebugMessage(player, chunk)
     }
@@ -93,24 +97,6 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         return loadedChunks
     }
 
-
-    // Get chunks loaded by all online players
-    private fun getAllPlayersLoadedChunks(chunkDistance: Int): Set<Chunk> {
-        val loadedChunks = mutableSetOf<Chunk>()
-        for (onlinePlayer in Bukkit.getOnlinePlayers()) {
-            val playerChunk = onlinePlayer.location.chunk
-            val world = onlinePlayer.world
-
-            for (x in -chunkDistance..chunkDistance) {
-                for (z in -chunkDistance..chunkDistance) {
-                    val chunk = world.getChunkAt(playerChunk.x + x, playerChunk.z + z)
-                    loadedChunks.add(chunk)
-                }
-            }
-        }
-        return loadedChunks
-    }
-
     // Delete all blocks in a chunk by setting them to AIR
     private fun deleteChunk(chunk: Chunk) {
         val world = chunk.world
@@ -140,6 +126,32 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         val messageComponent = MiniMessage.miniMessage().deserialize(message, resolver)
 
         Bukkit.broadcast(messageComponent)
+    }
+
+    private fun playPlayerSound() {
+        if (!config.getBoolean("Sound.enabled")) return
+
+        val soundTypeString = config.getString("soundType")!!
+        val soundType: Sound = Sound.valueOf(soundTypeString)
+
+        if (!config.getBoolean("Sound.allPlayers")) return
+
+        Bukkit.getOnlinePlayers().forEach { player ->
+            player.playSound(player, soundType, 1.0f, 1.0f)
+        }
+    }
+
+    private fun playChunkSound(chunk: Chunk) {
+        if (!config.getBoolean("Sound.enabled")) return
+
+        val soundTypeString = config.getString("soundType")!!
+        val soundType: Sound = Sound.valueOf(soundTypeString)
+
+        if (config.getBoolean("Sound.allPlayers")) return
+
+        val soundLocation = Location(chunk.world, chunk.x * 16 + 8.0, 64.0, chunk.z * 16 + 8.0)
+
+        soundLocation.world.playSound(soundLocation, soundType, 1.0f, 1.0f)
     }
 
     // Set blocks in a chunk to LIGHT_BLUE_WOOL for debugging purposes
