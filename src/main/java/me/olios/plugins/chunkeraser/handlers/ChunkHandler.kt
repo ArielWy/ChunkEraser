@@ -39,9 +39,10 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         for (onlinePlayer in Bukkit.getOnlinePlayers()) {
             val chunk = getRandomChunkForPlayer(onlinePlayer)
 
-            notifyPlayers(chunk)
-            playChunkSound(chunk)
-            deleteChunk(chunk)
+            LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
+            notifyPlayers(chunk) // send messages to the players
+            playChunkSound(chunk) // play sound
+            deleteChunk(chunk) // delete the chunk
 
             sendDebugMessage(player, chunk)
         }
@@ -52,9 +53,10 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         val randomPlayer = Bukkit.getOnlinePlayers().random()
         val chunk = getRandomChunkForPlayer(randomPlayer)
 
-        notifyPlayers(chunk)
-        playChunkSound(chunk)
-        deleteChunk(chunk)
+        LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
+        notifyPlayers(chunk) // send messages to the players
+        playChunkSound(chunk) // play sound
+        deleteChunk(chunk) // delete the chunk
 
         sendDebugMessage(player, chunk)
     }

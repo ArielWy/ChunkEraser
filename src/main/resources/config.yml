@@ -31,6 +31,7 @@ Sound:
   pitch: 1.0 # the sounds pitch
   allPlayers: false # If true, plays sound for all players; otherwise, just for the player where the chunk is erased
 
-Logging:
+Logs:
   enabled: true # Toggle logging on or off
-  logFilePath: "plugins/ChunkErase/logs.txt" # Path to the log file
+  logEntry: "[{time}] Erased chunk at {chunk.x}, {chunk.z} in world {chunk.world}"
+  logFilePath: "plugins/ChunkEraser/logs.txt" # Path to the log file
