@@ -27,7 +27,7 @@ class ActionBarHandler(private val plugin: ChunkEraser) {
         player?.sendMessage("Send ActionBar")
     }
 
-    fun isEnabled(): Boolean {
+    private fun isEnabled(): Boolean {
         return config.getBoolean("ActionBar.enabled")
     }
 

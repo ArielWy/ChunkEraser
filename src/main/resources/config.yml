@@ -7,6 +7,7 @@ General:
   forAllPlayers: false # If true, removes a chunk from each player's view distance
   increaseEachTime: false # If true, increases the number of chunks removed each time
   notifyPlayers: true # Send notify message when a chunk is erased
+  notifyNearbyPlayers: false # Send notify message to players near the erased chunk
   iterations: 0 # Keeps track of chunks removed iterations
 
 BossBar:
