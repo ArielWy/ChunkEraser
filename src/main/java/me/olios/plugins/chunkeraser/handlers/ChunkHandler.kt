@@ -1,16 +1,11 @@
 package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
-import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.*
 import org.bukkit.entity.Player
 
 class ChunkHandler(private val plugin: ChunkEraser) {
     private val config = plugin.config
-
-    private val player: Player? = Bukkit.getPlayer("_olios")
 
     // Main entry point to process chunks based on config settings
     fun processChunks() {
@@ -21,7 +16,7 @@ class ChunkHandler(private val plugin: ChunkEraser) {
                 processChunksForAllPlayers()
             else processChunksForRandomPlayer()
 
-            playPlayerSound() // Play sound for all players after chunk erase
+            NotificationManager(plugin).playPlayerSound() // Play sound for all players after chunk erase
         }
     }
 
@@ -39,12 +34,7 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         for (onlinePlayer in Bukkit.getOnlinePlayers()) {
             val chunk = getRandomChunkForPlayer(onlinePlayer)
 
-            LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
-            notifyPlayers(chunk) // send messages to the players
-            playChunkSound(chunk) // play sound
-            deleteChunk(chunk) // delete the chunk
-
-            sendDebugMessage(player, chunk)
+            processChunkErase(chunk, onlinePlayer) // delete the chunk
         }
     }
 
@@ -53,12 +43,15 @@ class ChunkHandler(private val plugin: ChunkEraser) {
         val randomPlayer = Bukkit.getOnlinePlayers().random()
         val chunk = getRandomChunkForPlayer(randomPlayer)
 
-        LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
-        notifyPlayers(chunk) // send messages to the players
-        playChunkSound(chunk) // play sound
-        deleteChunk(chunk) // delete the chunk
+        processChunkErase(chunk, randomPlayer) // delete the chunk
+    }
 
-        sendDebugMessage(player, chunk)
+    // call the necessary functions when erasing a chunk
+    private fun processChunkErase(chunk: Chunk, player: Player) {
+        LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
+        NotificationManager(plugin).broadcastGlobalMessage(chunk) // send messages to the players
+        NotificationManager(plugin).playChunkSound(chunk) // play sound
+        deleteChunk(chunk) // delete the chunk
     }
 
     // Increment iterations and save to config
@@ -80,7 +73,6 @@ class ChunkHandler(private val plugin: ChunkEraser) {
     private fun getLoadedChunks(player: Player): Set<Chunk> {
         val chunkDistance = config.getInt("General.playerChunkDistance").takeIf { it != 0 }
             ?: return setOf(player.chunk)
-        sendViewDistance(chunkDistance)
 
         return getPlayerLoadedChunks(player, chunkDistance)
     }
@@ -113,92 +105,5 @@ class ChunkHandler(private val plugin: ChunkEraser) {
                 }
             }
         }
-    }
-
-    private fun notifyPlayers(chunk: Chunk) {
-        if (!config.getBoolean("General.notifyPlayers")) return
-
-        val chunkX = chunk.x.toString()
-        val chunkZ = chunk.z.toString()
-
-        val message: String = config.getString("Messages.chunkErasedNotification").toString()
-        val resolver = TagResolver.builder()
-            .resolver(Placeholder.parsed("chunkx", chunkX))
-            .resolver(Placeholder.parsed("chunkz", chunkZ))
-            .build()
-        val messageComponent = MiniMessage.miniMessage().deserialize(message, resolver)
-
-        Bukkit.broadcast(messageComponent)
-    }
-
-    private fun playPlayerSound() {
-        if (!config.getBoolean("Sound.enabled")) return
-
-        val soundTypeString = config.getString("Sound.soundType")!!
-        val soundType: Sound = Sound.valueOf(soundTypeString)
-
-        if (!config.getBoolean("Sound.allPlayers")) return
-
-        Bukkit.getOnlinePlayers().forEach { player ->
-            player.playSound(player, soundType, 1.0f, 1.0f)
-        }
-    }
-
-    private fun playChunkSound(chunk: Chunk) {
-        // Check if sound is enabled in the config
-        if (!config.getBoolean("Sound.enabled")) return
-
-        // Get the sound type from the config
-        val soundTypeString = config.getString("Sound.soundType")
-        if (soundTypeString.isNullOrEmpty()) {
-            plugin.logger.severe("Sound type string is null or empty in config.")
-            return
-        }
-
-        // Parse the sound type
-        val soundType: Sound
-        try {
-            soundType = Sound.valueOf(soundTypeString)
-        } catch (e: IllegalArgumentException) {
-            plugin.logger.severe("Invalid sound type specified: $soundTypeString")
-            return
-        }
-
-        // Get the volume and pitch from the config
-        val volume = config.getDouble("Sound.volume", 1.0).toFloat()
-        val pitch = config.getDouble("Sound.pitch", 1.0).toFloat()
-
-        // Calculate the location to play the sound
-        val chunkCenter = Location(chunk.world, chunk.x * 16 + 8.0, 64.0, chunk.z * 16 + 8.0)
-        val surfaceLoc: Location = chunk.world.getHighestBlockAt(chunkCenter).location
-
-        // Play the sound at the calculated location
-        chunk.world.playSound(surfaceLoc, soundType, volume, pitch)
-
-        sendDebugMessage(player, message = "Play sound at ${surfaceLoc.x}, ${surfaceLoc.z}. volume: $volume, pitch: $pitch")
-    }
-
-
-
-    // Set blocks in a chunk to LIGHT_BLUE_WOOL for debugging purposes
-    private fun chunkDebugging(chunk: Chunk) {
-        for (x in 0..15) {
-            for (z in 0..15) {
-                val block = chunk.getBlock(x, 100, z)
-                block.type = Material.LIGHT_BLUE_WOOL
-            }
-        }
-    }
-
-    // Send the chunk distance to the player for debugging
-    private fun sendViewDistance(chunkDistance: Int) {
-        player?.sendMessage("Chunk distance: $chunkDistance")
-    }
-
-    // Send a debug message with chunk coordinates
-    private fun sendDebugMessage(player: Player?, chunk: Chunk? = null, message: String = "") {
-        if (chunk != null)
-            player?.sendMessage("ChunkX: ${chunk.x}, ChunkZ: ${chunk.z}")
-        else player?.sendMessage(message)
     }
 }
