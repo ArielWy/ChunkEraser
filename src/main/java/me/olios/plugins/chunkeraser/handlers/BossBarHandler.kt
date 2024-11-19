@@ -12,8 +12,6 @@ class BossBarHandler(private val plugin: ChunkEraser) {
     private val config = plugin.config
     private val intervalTime: Long = config.getLong("General.cooldown") * 20
 
-    private val player: Player? = Bukkit.getPlayer("_olios")
-
     fun createBossBar(timer: Long) {
         if (!isEnabled()) return
 
@@ -25,7 +23,6 @@ class BossBarHandler(private val plugin: ChunkEraser) {
         bossBar?.progress = 0.0
 
         Bukkit.getOnlinePlayers().forEach { player -> bossBar?.addPlayer(player) }
-        player?.sendMessage("CREATE BOSS-BAR")
     }
 
     fun updateBossBar(timer: Long) {
@@ -39,23 +36,15 @@ class BossBarHandler(private val plugin: ChunkEraser) {
         bossBar?.progress = progress.coerceIn(0.0, 1.0)
 
         Bukkit.getOnlinePlayers().forEach { player -> bossBar?.addPlayer(player) }
-
-        player?.sendMessage("UPDATE BOSS-BAR: Progress = $progress")
     }
 
-
     fun removeBossBar() {
-        if (bossBar != null) {
-            bossBar?.removeAll()
-            bossBar = null
-            player?.sendMessage("REMOVE BOSS-BAR: Boss bar removed")
-        } else {
-            player?.sendMessage("REMOVE BOSS-BAR: No boss bar to remove")
-        }
+        if (bossBar == null) return
+        bossBar?.removeAll()
+        bossBar = null
     }
 
     fun isEnabled(): Boolean {
         return config.getBoolean("BossBar.enabled")
     }
-
 }

@@ -1,37 +1,101 @@
-# Configuration File
 
+
+# General settings for the ChunkEraser plugin
 General:
-  enabled: false # toggle the plugin on or off
-  cooldown: 10 # Time in seconds
-  playerChunkDistance: 10 # the player distance of chunks that can be erased
-  forAllPlayers: false # If true, removes a chunk from each player's view distance
-  increaseEachTime: false # If true, increases the number of chunks removed each time
-  notifyPlayers: true # Send notify message when a chunk is erased
-  iterations: 0 # Keeps track of chunks removed iterations
 
+  # Enable or disable the plugin
+  enabled: false
+
+  # Cooldown time in seconds before chunk get erased
+  cooldown: 10
+
+  # The player chunk distance radius for chunk selection
+  playerChunkDistance: 10
+
+  # If true, erases chunks from all players' view distance
+  # If false, pick random player and erase chunk from his view distance
+  forAllPlayers: false
+
+  # If true, increases the erased chunks number each round
+  increaseEachTime: false
+
+  # If true, sends a notification message to all players when chunk is being erased
+  notifyPlayers: true
+
+  # Keeps track of chunk removal iterations
+  iterations: 0
+
+# BossBar settings
 BossBar:
-  enabled: true # Toggle the bossbar on or off
-  title: "<timer> seconds are left" # the title of the bossbar
-  color: BLUE # the color of the bossbar
-  style: SOLID # the style of the bossbar - can be SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
 
+  # Enable or disable the boss bar display
+  enabled: true
+
+  # Boss bar title
+  # PlaceHolder:
+    # <timer> - for the countdown timer - update dynamically
+  title: "<timer> seconds are left"
+
+  # Boss bar color
+  # Can be use: 'BLUE', 'RED', 'PINK', 'YELLOW', 'GREEN', 'PURPLE', 'WHITE'
+  color: BLUE
+
+  # Boss bar style
+  # Can be use: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+  style: SOLID
+
+# Action bar settings
 ActionBar:
-  enabled: false # Toggle the action bar on or off
+
+  # Enable or disable the action bar message
+  enabled: false
+
+  # Action bar message with MiniMessage placeholders for formatting
+  # You can edit messages that use MiniMessage in here https://webui.advntr.dev/
   message: "<blue>Chunks being erased in <gold><timer></gold> seconds!</blue>"
 
-
+# Messages (Uses MiniMessage)
+# You can edit messages that use MiniMessage in here https://webui.advntr.dev/
 Messages:
-  # We are using Mini Messages to give the best
+
+  # Chunk erased notification message
+  # PlaceHolders:
+    # <chunkx> - the x coordination of the chunk
+    # <chunkz> - the z coordination of the chunk
   chunkErasedNotification: "<aqua>A chunk has been <hover:show_text:'<gold>at</gold> <green><chunkx></green>, <green><chunkz></green>'>erased!</hover></aqua>"
 
+# Sound settings
 Sound:
-  enabled: true # Toggle the sound notifications on or off
-  soundType: "ENTITY_ENDER_DRAGON_GROWL" # The type of sound to play
-  volume: 10.0 # the sounds volume
-  pitch: 1.0 # the sounds pitch
-  allPlayers: false # If true, plays sound for all players; otherwise, just for the player where the chunk is erased
 
+  # Enable or disable sound effect
+  enabled: true
+
+  # Sound type (refer to https://jd.papermc.io/paper/1.21.3/org/bukkit/Sound.html)
+  soundType: "ENTITY_ENDER_DRAGON_GROWL"
+
+  # Sound volume (0 = no sound, higher values = louder)
+  volume: 10.0
+
+  # Sound pitch (1 = normal, higher = higher pitched, lower = lower pitched)
+  pitch: 1.0
+
+  # If true, plays the sound for all players when chunk get erased
+  # If false, plays the sound in the chunk location so just nearby players would hear it.
+  allPlayers: false
+
+# Log settings
 Logs:
-  enabled: true # Toggle logging on or off
+
+  # Enable or disable logging
+  enabled: true
+
+  # Log entry format with placeholders for chunk coordinates, world name, and timestamp
+  # PlaceHolder:
+    # {time} - for timestamp
+    # {chunk.x} - chunks' x coordination
+    # {chunk.z} - chunks' z coordination
+    # {chunk.world} - chunks' world name
   logEntry: "[{time}] Erased chunk at {chunk.x}, {chunk.z} in world {chunk.world}"
-  logFilePath: "plugins/ChunkEraser/logs.txt" # Path to the log file
+
+  # Path to the log file
+  logFilePath: "plugins/ChunkEraser/logs.txt"
