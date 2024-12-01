@@ -37,9 +37,11 @@ class ChunkCommand(private val plugin: ChunkEraser): CommandExecutor, TabComplet
         p3: Array<out String>?
     ): MutableList<String>? {
         if (p3?.size == 1) {
-            // If the user is typing the first argument, return a list of possible completions
-            return mutableListOf( "run", "start", "restart", "stop", "reload")
+            // If the user is typing the first argument, filter the list based on the first character of p3[0]
+            val options = mutableListOf("run", "start", "restart", "stop", "reload")
+            return options.filter { it.startsWith(p3[0], ignoreCase = true) || p3[0].isEmpty() }.toMutableList()
         }
         return null
     }
+
 }
