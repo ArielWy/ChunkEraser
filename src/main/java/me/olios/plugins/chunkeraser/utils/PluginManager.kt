@@ -1,5 +1,6 @@
-package me.olios.plugins.chunkeraser
+package me.olios.plugins.chunkeraser.utils
 
+import me.olios.plugins.chunkeraser.ChunkEraser
 import me.olios.plugins.chunkeraser.handlers.ChunkHandler
 import me.olios.plugins.chunkeraser.handlers.TimerTask
 
@@ -7,7 +8,7 @@ object PluginManager {
     private var plugin: ChunkEraser? = null
     private var timerTask: TimerTask? = null
     fun initialize(plugin: ChunkEraser) {
-        this.plugin = plugin
+        PluginManager.plugin = plugin
 
         // Initialize TimerTask and set it in BossBarHandler
         timerTask = TimerTask(plugin)

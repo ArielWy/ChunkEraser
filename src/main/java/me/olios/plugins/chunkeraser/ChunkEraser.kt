@@ -1,5 +1,7 @@
 package me.olios.plugins.chunkeraser
 
+import me.olios.plugins.chunkeraser.commands.ChunkCommand
+import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 
 class ChunkEraser : JavaPlugin() {
