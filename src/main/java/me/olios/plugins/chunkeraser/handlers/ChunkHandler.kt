@@ -1,6 +1,7 @@
 package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
+import me.olios.plugins.chunkeraser.utils.NotificationManager
 import org.bukkit.*
 import org.bukkit.entity.Player
 

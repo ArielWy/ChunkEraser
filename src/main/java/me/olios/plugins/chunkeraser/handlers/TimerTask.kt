@@ -15,14 +15,10 @@ class TimerTask(private val plugin: ChunkEraser) {
     var timer: Long = 10
     var task: BukkitRunnable? = null
 
-    private val player: Player? = Bukkit.getPlayer("_olios")
-
     fun startTask() {
         timer = intervalTime
         bossBarHandler.createBossBar(timer)
         actionBarHandler.sendActionBar(timer)
-
-        player?.sendMessage("start task")
 
         task = object : BukkitRunnable() {
             override fun run() {
@@ -46,9 +42,6 @@ class TimerTask(private val plugin: ChunkEraser) {
             task?.cancel()
             task = null
             bossBarHandler.removeBossBar()
-            player?.sendMessage("stop task")
-        } else {
-            player?.sendMessage("No task to stop")
         }
     }
 
@@ -56,8 +49,6 @@ class TimerTask(private val plugin: ChunkEraser) {
     fun restartTask() {
         stopTask()
         startTask()
-
-        player?.sendMessage("restart task")
     }
 
     fun isRunning(): Boolean {

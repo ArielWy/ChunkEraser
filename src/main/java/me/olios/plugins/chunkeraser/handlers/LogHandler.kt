@@ -52,21 +52,18 @@ class LogHandler(plugin: ChunkEraser) {
     }
 
     private fun getLogEntry(chunk: Chunk): String {
-        val defaultLogEntry= "[{time}] Erased chunk at {chunk.x}, {chunk.z} in world {chunk.world}"
+        val defaultLogEntry= "[%TIME%] Erased chunk at %CHUNK.X%, %CHUNK.Z% in world %CHUNK.WORLD%"
         var logEntry: String = config.getString("Logs.logEntry", defaultLogEntry)?: defaultLogEntry
         val placeholders = mapOf<String, String>(
-            "{chunk.x}" to chunk.x.toString(),
-            "{chunk.z}" to chunk.z.toString(),
-            "{chunk.world}" to chunk.world.name,
-            "{time}" to LocalDateTime.now().toString()
+            "%CHUNK.X%" to chunk.x.toString(),
+            "%CHUNK.Z%" to chunk.z.toString(),
+            "%CHUNK.WORLD%" to chunk.world.name,
+            "%TIME%" to LocalDateTime.now().toString()
         )
 
         for ((placeholder, value) in placeholders) {
             logEntry = logEntry.replace(placeholder, value)
         }
-
-        Bukkit.getPlayer("_olios")?.sendMessage(logEntry)
-
         return logEntry
     }
 }

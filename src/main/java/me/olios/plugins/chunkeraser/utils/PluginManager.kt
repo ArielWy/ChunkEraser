@@ -40,4 +40,8 @@ object PluginManager {
 
         startTimer()
     }
+
+    fun reload() {
+        plugin?.reloadConfig()
+    }
 }

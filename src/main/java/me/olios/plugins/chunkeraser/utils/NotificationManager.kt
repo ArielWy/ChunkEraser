@@ -1,13 +1,12 @@
-package me.olios.plugins.chunkeraser.handlers
+package me.olios.plugins.chunkeraser.utils
 
 import me.olios.plugins.chunkeraser.ChunkEraser
 import net.kyori.adventure.text.minimessage.MiniMessage
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Bukkit
 import org.bukkit.Chunk
 import org.bukkit.Location
 import org.bukkit.Sound
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class NotificationManager(private val plugin: ChunkEraser) {
@@ -19,15 +18,18 @@ class NotificationManager(private val plugin: ChunkEraser) {
         val chunkX = chunk.x.toString()
         val chunkZ = chunk.z.toString()
 
-        val message: String = config.getString("Messages.chunkErasedNotification").toString()
-        Bukkit.broadcast(MiniMessage.miniMessage().deserialize(message, createTagResolver(chunkX, chunkZ)))
+        var message: String = config.getString("Messages.chunkErasedNotification").toString()
+        val placeholder: MutableMap<String, String> = mutableMapOf("%CHUNK.X%" to chunkX, "%CHUNK.Z%" to chunkZ)
+        message = replacePlaceHolder(message, placeholder)
+        Bukkit.broadcast(MiniMessage.miniMessage().deserialize(message))
     }
 
-    private fun createTagResolver(chunkX: String, chunkZ: String): TagResolver {
-        return TagResolver.builder()
-            .resolver(Placeholder.parsed("chunkx", chunkX))
-            .resolver(Placeholder.parsed("chunkz", chunkZ))
-            .build()
+    private fun replacePlaceHolder(string: String, mutableMap: MutableMap<String, String>): String {
+        var result = string
+        for ((key, value ) in mutableMap) {
+            result = result.replace(key, value)
+        }
+        return result
     }
 
     fun playPlayerSound() {

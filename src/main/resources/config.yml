@@ -34,7 +34,7 @@ BossBar:
   # Boss bar title
   # PlaceHolder:
     # <timer> - for the countdown timer - update dynamically
-  title: "<timer> seconds are left"
+  title: "%TIMER% seconds are left"
 
   # Boss bar color
   # Can be use: 'BLUE', 'RED', 'PINK', 'YELLOW', 'GREEN', 'PURPLE', 'WHITE'
@@ -52,17 +52,20 @@ ActionBar:
 
   # Action bar message with MiniMessage placeholders for formatting
   # You can edit messages that use MiniMessage in here https://webui.advntr.dev/
-  message: "<blue>Chunks being erased in <gold><timer></gold> seconds!</blue>"
+  message: "<blue>Chunks being erased in <gold>%TIMER%</gold> seconds!</blue>"
 
 # Messages (Uses MiniMessage)
 # You can edit messages that use MiniMessage in here https://webui.advntr.dev/
 Messages:
 
   # Chunk erased notification message
-  # PlaceHolders:
-    # <chunkx> - the x coordination of the chunk
-    # <chunkz> - the z coordination of the chunk
-  chunkErasedNotification: "<aqua>A chunk has been <hover:show_text:'<gold>at</gold> <green><chunkx></green>, <green><chunkz></green>'>erased!</hover></aqua>"
+  chunkErasedNotification: "<aqua>A chunk has been <hover:show_text:'<gold>at</gold> <green>%CHUNK.X%</green>, <green>%CHUNK.Z%</green>'>erased!</hover></aqua>"
+
+  # No permission message
+  NoPerm: "<red>You lack the permission <dark_red>%PERM%</dark_red>!</red>"
+
+  # execute command from console / anything that is not the player
+  NoPlayer: "<red>You can't do that through the <dark_red>%EXECUTER%</dark_red>!</red>"
 
 # Sound settings
 Sound:
@@ -95,7 +98,7 @@ Logs:
     # {chunk.x} - chunks' x coordination
     # {chunk.z} - chunks' z coordination
     # {chunk.world} - chunks' world name
-  logEntry: "[{time}] Erased chunk at {chunk.x}, {chunk.z} in world {chunk.world}"
+  logEntry: "[%TIME%] Erased chunk at %CHUNK.X%, %CHUNK.Z% in world %CHUNK.WORLD%"
 
   # Path to the log file
   logFilePath: "plugins/ChunkEraser/logs.txt"

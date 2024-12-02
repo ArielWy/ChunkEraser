@@ -9,39 +9,35 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 
 class ChunkCommand(private val plugin: ChunkEraser): CommandExecutor, TabCompleter {
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, p3: Array<out String>?): Boolean {
-        val command = p3?.getOrElse(0) { return false }?.lowercase()
-        if (sender !is Player) return false
+    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
+        if (args.isEmpty()) return false
 
-        when (command) {
-            "run" -> PluginManager.removeChunkImmediately()
-
-            "start" -> PluginManager.startTimer()
-            "stop" -> PluginManager.stopTimer()
-            "restart" -> PluginManager.restartTimer()
-            "reload" -> {
-                plugin.saveDefaultConfig()
-                plugin.reloadConfig()
-            }
-
-            else -> return false
+        val subCommand = SubCommandManager.getCommand(args[0])
+        if (subCommand == null) {
+            sender.sendMessage("§cUnknown subcommand: ${args[0]}")
+            return true
         }
 
-        return true
+        return subCommand.execute(sender, args.sliceArray(1 until args.size))
     }
 
+
     override fun onTabComplete(
-        p0: CommandSender,
+        sender: CommandSender,
         p1: Command,
         p2: String,
-        p3: Array<out String>?
+        args: Array<out String>?
     ): MutableList<String>? {
-        if (p3?.size == 1) {
-            // If the user is typing the first argument, filter the list based on the first character of p3[0]
-            val options = mutableListOf("run", "start", "restart", "stop", "reload")
-            return options.filter { it.startsWith(p3[0], ignoreCase = true) || p3[0].isEmpty() }.toMutableList()
+        if (args == null || args.isEmpty()) return SubCommandManager.getAllCommands().toMutableList()
+
+        val subCommand = SubCommandManager.getCommand(args[0])
+        if (args.size == 1) {
+            return SubCommandManager.getAllCommands()
+                .filter { it.startsWith(args[0], ignoreCase = true) }
+                .toMutableList()
         }
-        return null
+
+        return subCommand?.tabComplete(sender, args.sliceArray(1 until args.size))?.toMutableList()
     }
 
 }

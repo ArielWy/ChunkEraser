@@ -10,21 +10,15 @@ import org.bukkit.entity.Player
 class ActionBarHandler(private val plugin: ChunkEraser) {
     private val config = plugin.config
 
-    private val player: Player? = Bukkit.getPlayer("_olios")
-
-
     fun sendActionBar(timer: Long) {
         if (!isEnabled()) return
 
-        val message = config.getString("ActionBar.message").toString()
-        val resolver = TagResolver.resolver(Placeholder.parsed("timer", timer.toString()))
-        val messageComponent = MiniMessage.miniMessage().deserialize(message, resolver)
+        val message = config.getString("ActionBar.message").toString().replace("%TIMER%", timer.toString(), ignoreCase = true)
+        val messageComponent = MiniMessage.miniMessage().deserialize(message)
 
         Bukkit.getOnlinePlayers().forEach { player ->
             player.sendActionBar(messageComponent)
         }
-
-        player?.sendMessage("Send ActionBar")
     }
 
     private fun isEnabled(): Boolean {

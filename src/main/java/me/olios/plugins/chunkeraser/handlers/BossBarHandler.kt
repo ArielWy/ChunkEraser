@@ -15,7 +15,7 @@ class BossBarHandler(private val plugin: ChunkEraser) {
     fun createBossBar(timer: Long) {
         if (!isEnabled()) return
 
-        val title: String = config.getString("BossBar.title")?.replace("<timer>", timer.toString(), true) ?: timer.toString()
+        val title: String = config.getString("BossBar.title")?.replace("%TIMER%", timer.toString(), true) ?: timer.toString()
         val barColor: String = config.getString("BossBar.color") ?: "BLUE"
         val barStyle: String = config.getString("BossBar.style") ?: "SOLID"
 

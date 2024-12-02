@@ -1,6 +1,8 @@
 package me.olios.plugins.chunkeraser
 
 import me.olios.plugins.chunkeraser.commands.ChunkCommand
+import me.olios.plugins.chunkeraser.commands.SubCommandManager
+import me.olios.plugins.chunkeraser.commands.subcommands.*
 import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -20,6 +22,12 @@ class ChunkEraser : JavaPlugin() {
     }
 
     private fun registerCommands() {
-        getCommand("chunk")?.setExecutor(ChunkCommand(this))
+        getCommand("chunkeraser")?.setExecutor(ChunkCommand(this))
+
+        SubCommandManager.registerCommand("start", StartCommand())
+        SubCommandManager.registerCommand("stop", StopCommand(this))
+        SubCommandManager.registerCommand("restart", RestartCommand(this))
+        SubCommandManager.registerCommand("erase", EraseCommand(this))
+        SubCommandManager.registerCommand("reload", ReloadCommand(this))
     }
 }

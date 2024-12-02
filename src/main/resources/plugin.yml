@@ -3,11 +3,15 @@ author: olios
 version: '${project.version}'
 main: me.olios.plugins.chunkeraser.ChunkEraser
 api-version: 1.20
+
 commands:
-  chunk:
-    description: the main command for the ChunkEraser Plugin!
-    usage: /<command>
+  chunkeraser:
+    aliases:
+      - ce
+    description: Main command for the ChunkEraser plugin.
+    usage: /<command> <subcommand>
     permission: ChunkEraser.admin
+
 permissions:
-  ChunkEraser.admin:
+  ChunkEraser.*:
     default: op
