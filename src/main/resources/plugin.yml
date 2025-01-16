@@ -10,8 +10,34 @@ commands:
       - ce
     description: Main command for the ChunkEraser plugin.
     usage: /<command> <subcommand>
-    permission: ChunkEraser.admin
+    permission: ChunkEraser.*
 
 permissions:
   ChunkEraser.*:
     default: op
+    children:
+      ChunkEraser.erase: true
+      ChunkEraser.reload: true
+      ChunkEraser.restart: true
+      ChunkEraser.start: true
+      ChunkEraser.stop: true
+
+  ChunkEraser.erase:
+    default: op
+    description: Allows the user to erase chunks.
+
+  ChunkEraser.reload:
+    default: op
+    description: Allows the user to reload the plugin.
+
+  ChunkEraser.restart:
+    default: op
+    description: Allows the user to restart the plugin.
+
+  ChunkEraser.start:
+    default: op
+    description: Allows the user to start the plugin.
+
+  ChunkEraser.stop:
+    default: op
+    description: Allows the user to stop the plugin.

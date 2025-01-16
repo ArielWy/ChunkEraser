@@ -28,7 +28,7 @@ class BossBarHandler(private val plugin: ChunkEraser) {
     fun updateBossBar(timer: Long) {
         if (!isEnabled()) return
 
-        val title: String = config.getString("BossBar.title")?.replace("<timer>", timer.toString(), true) ?: timer.toString()
+        val title: String = config.getString("BossBar.title")?.replace("%TIMER%", timer.toString(), true) ?: timer.toString()
         bossBar?.setTitle(title)
 
         // Calculate progress
@@ -44,7 +44,7 @@ class BossBarHandler(private val plugin: ChunkEraser) {
         bossBar = null
     }
 
-    fun isEnabled(): Boolean {
+    private fun isEnabled(): Boolean {
         return config.getBoolean("BossBar.enabled")
     }
 }

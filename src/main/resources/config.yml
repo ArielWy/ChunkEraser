@@ -1,6 +1,6 @@
+# ChunkEraser Configuration file
 
-
-# General settings for the ChunkEraser plugin
+# General settings
 General:
 
   # Enable or disable the plugin
@@ -12,8 +12,8 @@ General:
   # The player chunk distance radius for chunk selection
   playerChunkDistance: 10
 
-  # If true, erases chunks from all players' view distance
-  # If false, pick random player and erase chunk from his view distance
+  # If true, erases chunks from all players' view distance (remove one chunk for each player)
+  # If false, pick random player and erase chunk from his view distance (remove one chunk each time)
   forAllPlayers: false
 
   # If true, increases the erased chunks number each round
@@ -32,8 +32,6 @@ BossBar:
   enabled: true
 
   # Boss bar title
-  # PlaceHolder:
-    # <timer> - for the countdown timer - update dynamically
   title: "%TIMER% seconds are left"
 
   # Boss bar color
@@ -93,12 +91,7 @@ Logs:
   enabled: true
 
   # Log entry format with placeholders for chunk coordinates, world name, and timestamp
-  # PlaceHolder:
-    # {time} - for timestamp
-    # {chunk.x} - chunks' x coordination
-    # {chunk.z} - chunks' z coordination
-    # {chunk.world} - chunks' world name
-  logEntry: "[%TIME%] Erased chunk at %CHUNK.X%, %CHUNK.Z% in world %CHUNK.WORLD%"
+  logEntry: "[%TIME%] Erased chunk at %CHUNK.X%, %CHUNK.Z% in world %CHUNK.WORLD%\n"
 
   # Path to the log file
   logFilePath: "plugins/ChunkEraser/logs.txt"
