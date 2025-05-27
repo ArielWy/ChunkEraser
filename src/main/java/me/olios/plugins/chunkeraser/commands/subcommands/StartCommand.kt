@@ -8,11 +8,11 @@ import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class StartCommand(private val plugin: ChunkEraser): SubCommand {
+class StartCommand(): SubCommand {
     override fun execute(sender: CommandSender, args: Array<out String>): Boolean {
-        if (sender !is Player) return ChatUtils(plugin).checkIfPlayer(sender)
+        if (sender !is Player) return ChatUtils().checkIfPlayer(sender)
 
-        if (ChatUtils(plugin).checkPerm(sender, "chunkeraser.start"))
+        if (ChatUtils().checkPerm(sender, "chunkeraser.start"))
             PluginManager.startTimer()
 
         return true

@@ -10,7 +10,6 @@ commands:
       - ce
     description: Main command for the ChunkEraser plugin.
     usage: /<command> <subcommand>
-    permission: ChunkEraser.*
 
 permissions:
   ChunkEraser.*:

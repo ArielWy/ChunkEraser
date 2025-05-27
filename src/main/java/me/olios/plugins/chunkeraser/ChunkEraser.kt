@@ -22,12 +22,12 @@ class ChunkEraser : JavaPlugin() {
     }
 
     private fun registerCommands() {
-        getCommand("chunkeraser")?.setExecutor(ChunkCommand(this))
+        getCommand("chunkeraser")?.setExecutor(ChunkCommand())
 
-        SubCommandManager.registerCommand("start", StartCommand(this))
-        SubCommandManager.registerCommand("stop", StopCommand(this))
-        SubCommandManager.registerCommand("restart", RestartCommand(this))
-        SubCommandManager.registerCommand("erase", EraseCommand(this))
-        SubCommandManager.registerCommand("reload", ReloadCommand(this))
+        SubCommandManager.registerCommand("start", StartCommand())
+        SubCommandManager.registerCommand("stop", StopCommand())
+        SubCommandManager.registerCommand("restart", RestartCommand())
+        SubCommandManager.registerCommand("erase", EraseCommand())
+        SubCommandManager.registerCommand("reload", ReloadCommand())
     }
 }

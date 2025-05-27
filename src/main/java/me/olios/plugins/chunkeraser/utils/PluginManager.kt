@@ -5,13 +5,16 @@ import me.olios.plugins.chunkeraser.handlers.ChunkHandler
 import me.olios.plugins.chunkeraser.handlers.TimerTask
 
 object PluginManager {
-    private var plugin: ChunkEraser? = null
+    private lateinit var plugin: ChunkEraser
     private var timerTask: TimerTask? = null
+
+    fun getInstance() = plugin
+
     fun initialize(plugin: ChunkEraser) {
         PluginManager.plugin = plugin
 
         // Initialize TimerTask and set it in BossBarHandler
-        timerTask = TimerTask(plugin)
+        timerTask = TimerTask()
     }
 
     fun startTimer() {
@@ -31,17 +34,17 @@ object PluginManager {
     }
 
     fun removeChunkImmediately() {
-        ChunkHandler(plugin!!).processChunks()
+        ChunkHandler().processChunks()
         restartTimer(true)
     }
 
     fun isEnabled() {
-        if (!plugin!!.config.getBoolean("General.enable")) return
+        if (!plugin.config.getBoolean("General.enable")) return
 
         startTimer()
     }
 
     fun reload() {
-        plugin?.reloadConfig()
+        plugin.reloadConfig()
     }
 }

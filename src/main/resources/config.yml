@@ -91,7 +91,7 @@ Logs:
   enabled: true
 
   # Log entry format with placeholders for chunk coordinates, world name, and timestamp
-  logEntry: "[%TIME%] Erased chunk at %CHUNK.X%, %CHUNK.Z% in world %CHUNK.WORLD%\n"
+  logEntry: "[%TIME%] Erased chunk at {%CHUNK.X%, %CHUNK.Z%} in world {%CHUNK.WORLD%} near player: {%PLAYER%}\n"
 
   # Path to the log file
   logFilePath: "plugins/ChunkEraser/logs.txt"

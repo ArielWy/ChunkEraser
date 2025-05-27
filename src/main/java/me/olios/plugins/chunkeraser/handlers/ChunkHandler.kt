@@ -2,10 +2,12 @@ package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
 import me.olios.plugins.chunkeraser.utils.NotificationManager
+import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.*
 import org.bukkit.entity.Player
 
-class ChunkHandler(private val plugin: ChunkEraser) {
+class ChunkHandler() {
+    private val plugin = PluginManager.getInstance()
     private val config = plugin.config
 
     // Main entry point to process chunks based on config settings
@@ -17,7 +19,7 @@ class ChunkHandler(private val plugin: ChunkEraser) {
                 processChunksForAllPlayers()
             else processChunksForRandomPlayer()
 
-            NotificationManager(plugin).playPlayerSound() // Play sound for all players after chunk erase
+            NotificationManager().playPlayerSound() // Play sound for all players after chunk erase
         }
     }
 
@@ -49,9 +51,9 @@ class ChunkHandler(private val plugin: ChunkEraser) {
 
     // call the necessary functions when erasing a chunk
     private fun processChunkErase(chunk: Chunk, player: Player) {
-        LogHandler(plugin).logChunkEnabled(chunk) // log to the log file if enabled
-        NotificationManager(plugin).broadcastGlobalMessage(chunk) // send messages to the players
-        NotificationManager(plugin).playChunkSound(chunk) // play sound
+        LogHandler().logChunkEnabled(chunk, player) // log to the log file if enabled
+        NotificationManager().broadcastGlobalMessage(chunk) // send messages to the players
+        NotificationManager().playChunkSound(chunk) // play sound
         deleteChunk(chunk) // delete the chunk
     }
 

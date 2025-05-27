@@ -7,11 +7,11 @@ import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class EraseCommand(private val plugin: ChunkEraser): SubCommand {
+class EraseCommand(): SubCommand {
     override fun execute(sender: CommandSender, args: Array<out String>): Boolean {
-        if (sender !is Player) return ChatUtils(plugin).checkIfPlayer(sender)
+        if (sender !is Player) return ChatUtils().checkIfPlayer(sender)
 
-        if (ChatUtils(plugin).checkPerm(sender, "chunkeraser.erase"))
+        if (ChatUtils().checkPerm(sender, "chunkeraser.erase"))
             PluginManager.removeChunkImmediately()
 
         return true

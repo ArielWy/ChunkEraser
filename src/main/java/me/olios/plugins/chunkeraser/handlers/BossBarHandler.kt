@@ -1,13 +1,15 @@
 package me.olios.plugins.chunkeraser.handlers
 
 import me.olios.plugins.chunkeraser.ChunkEraser
+import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.Bukkit
 import org.bukkit.boss.BarColor
 import org.bukkit.boss.BarStyle
 import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 
-class BossBarHandler(private val plugin: ChunkEraser) {
+class BossBarHandler() {
+    private val plugin = PluginManager.getInstance()
     private var bossBar: BossBar? = null
     private val config = plugin.config
     private val intervalTime: Long = config.getLong("General.cooldown") * 20

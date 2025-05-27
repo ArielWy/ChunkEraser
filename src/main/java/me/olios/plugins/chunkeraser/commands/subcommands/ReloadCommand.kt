@@ -7,9 +7,10 @@ import me.olios.plugins.chunkeraser.utils.PluginManager
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ReloadCommand(private val plugin: ChunkEraser): SubCommand {
+class ReloadCommand: SubCommand {
+    private val plugin = PluginManager.getInstance()
     override fun execute(sender: CommandSender, args: Array<out String>): Boolean {
-        if (ChatUtils(plugin).checkPerm(sender, "chunkeraser.reload")) {
+        if (ChatUtils().checkPerm(sender, "chunkeraser.reload")) {
             plugin.saveDefaultConfig()
             plugin.reloadConfig()
             PluginManager.reload()

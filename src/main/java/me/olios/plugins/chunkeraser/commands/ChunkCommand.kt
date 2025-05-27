@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 
-class ChunkCommand(private val plugin: ChunkEraser): CommandExecutor, TabCompleter {
+class ChunkCommand(): CommandExecutor, TabCompleter {
     override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
         if (args.isEmpty()) return false
 
@@ -28,11 +28,14 @@ class ChunkCommand(private val plugin: ChunkEraser): CommandExecutor, TabComplet
         p2: String,
         args: Array<out String>?
     ): MutableList<String>? {
-        if (args == null || args.isEmpty()) return SubCommandManager.getAllCommands().toMutableList()
+
+        val subCommands = SubCommandManager.getAllCommands().filter { sender.hasPermission("ChunkEraser.$it") }
+
+        if (args == null || args.isEmpty()) return subCommands.toMutableList()
 
         val subCommand = SubCommandManager.getCommand(args[0])
         if (args.size == 1) {
-            return SubCommandManager.getAllCommands()
+            return subCommands
                 .filter { it.startsWith(args[0], ignoreCase = true) }
                 .toMutableList()
         }

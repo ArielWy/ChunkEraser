@@ -9,7 +9,8 @@ import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class NotificationManager(private val plugin: ChunkEraser) {
+class NotificationManager() {
+    private val plugin = PluginManager.getInstance()
     private val config = plugin.config
 
     fun broadcastGlobalMessage(chunk: Chunk) {

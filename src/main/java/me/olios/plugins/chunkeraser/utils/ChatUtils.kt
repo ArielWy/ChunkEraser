@@ -5,7 +5,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-class ChatUtils(private val plugin: ChunkEraser) {
+class ChatUtils() {
+    private val plugin = PluginManager.getInstance()
     private val config = plugin.config
 
     fun checkIfPlayer(sender: CommandSender, sendMessage: Boolean = true): Boolean {
