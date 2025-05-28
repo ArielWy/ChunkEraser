@@ -10,7 +10,7 @@ ChunkEraser
 ## How it Works
 
 - **Countdown:** The plugin runs on a cooldown timer (in seconds). During the countdown, players may see an action bar or boss bar showing time remaining until the next event.
-- **Erasing:** When the timer expires, ChunkEraser deletes chunks around each player. Depending on the mode, it might remove one random chunk or all chunks within a given radius, shape or pattern. This causes terrain to collapse or disappear, often with particles and sound effects.
+- **Erasing:** When the timer expires, ChunkEraser deletes chunks around each player. Depending on the mode, it might remove one random chunk or all chunks within a given radius, shape or pattern. This causes terrain to collaps often with particles and sound effects.
 - **Player Impact:** Any player standing on an erased chunk may fall into lower terrain or the void, adding danger and excitement. After each erase, the timer resets (or increases) for the next event.
 - **Alerts:** The plugin can broadcast chat messages and play sounds right before or after chunks are erased (e.g. “Warning: Chunks will vanish in 10 seconds!”). It may also use a boss bar to visually show the countdown. These alerts often use placeholders (like player name or time) for dynamic info.
 
@@ -23,43 +23,22 @@ ChunkEraser
 4. **Enable the Plugin:** In `config.yml`, set `enabled: true`, or run `/chunkeraser enable`.
 
 
-## Configuration  
-The `config.yml` is generated after the first run in `plugins/ChunkEraser/`. Below are key options (default values shown):
+## Configuration
 
-```yaml
-General:
-  enabled: false
-  cooldown: 10
-  playerChunkDistance: 10
-  forAllPlayers: false
-  increaseEachTime: false
-  notifyPlayers: true
-  iterations: 0
+Edit `plugins/ChunkEraser/config.yml` to customize the game:
 
-BossBar:
-  enabled: true
-  title: "%TIMER% seconds are left"
-  color: BLUE
-  style: SOLID
+enabled (boolean): Turn ChunkEraser on or off.
 
-ActionBar:
-  enabled: false
-  message: "<blue>Chunks being erased in <gold>%TIMER%</gold> seconds!</blue>"
+radius (integer): Chunk radius around each player. Chunks within this radius can be erased.
 
-Messages:
-  chunkErasedNotification: "<aqua>A chunk has been <hover:show_text:'<gold>at</gold> <green>%CHUNK.X%</green>, <green>%CHUNK.Z%</green>'>erased!</hover></aqua>"
-  NoPerm: "<red>You lack the permission <dark_red>%PERM%</dark_red>!</red>"
-  NoPlayer: "<red>You can't do that through the <dark_red>%EXECUTER%</dark_red>!</red>"
+cooldown (integer): Seconds between erase events.
 
-Sound:
-  enabled: true
-  soundType: "ENTITY_ENDER_DRAGON_GROWL"
-  volume: 10.0
-  pitch: 1.0
-  allPlayers: false
+mode (string): Erasing pattern. For example, "random" to remove a single random chunk each time, or "area" to erase all chunks within the radius.
 
-Logs:
-  enabled: true
-  logEntry: "[%TIME%] Erased chunk at {%CHUNK.X%, %CHUNK.Z%} in world {%CHUNK.WORLD%} near player: {%PLAYER%}\n"
-  logFilePath: "plugins/ChunkEraser/logs.txt"
-```
+messages: Section to customize player alerts. Includes keys like prefix, countdown, and erase. Message text can include colors and placeholders.
+
+sounds: (optional) Configure sound effects. E.g. a sound to play when warning players or when chunks are erased.
+
+visual: (optional) Enable boss bar or action bar displays for the countdown. You can set bossbar: true to show a boss bar with a title (configurable in messages).
+
+logging: (optional) Options to log erase events to console or file for admins.
